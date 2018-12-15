@@ -17,15 +17,15 @@ bool CheckWin(string &lettersFound,vector<string> &listWords);
 bool PatternMatch (string wordCheck, string lettersUsed,char userGuess);
 
 void DisplayHeader() {
-    cout << "Class: CS 141													\n"
-	     << "Authors: Kirun Haque and Michelle Baginski						\n"
-		 << "Lab: Tues 1pm (Kirun) and 11am (Michelle)						\n"
-		 << "System: C++ Mac Xcode											\n\n";
+    cout << "Class: CS 141						\n"
+	 << "Authors: Kirun Haque and Michelle Baginski			\n"
+	 << "Lab: Tues 1pm (Kirun) and 11am (Michelle)			\n"
+	 << "System: C++ Mac Xcode					\n\n";
 		    
-    cout << "Welcome to the Twisted Hangman Game!							\n"
-    	 << "Enter the length of the word you want. 						\n"
-    	 << "Your goal is to guess the word within 15 tries.				\n"
-   	 	 << "So keep guessing letters until you guess the word!				\n\n";
+    cout << "Welcome to the Twisted Hangman Game!			\n"
+    	 << "Enter the length of the word you want.			\n"
+    	 << "Your goal is to guess the word within 15 tries.		\n"
+   	 << "So keep guessing letters until you guess the word!		\n\n";
 }
 
 // removes all words that contain any occurence of letters chosen by the player
@@ -276,3 +276,4 @@ int main() {
 
     return 0;
 }
+
