@@ -135,7 +135,7 @@ bool CheckWin(string &lettersFound, vector<string> &listWords) {
     int unsigned long numWords = listWords.size(); 
     wordLength = lettersFound.size();                
     
-    for (int i = 0; i < wordLength; ++i) {		// count the underscores
+    for (int i = 0; i < wordLength; ++i) {	// count the underscores
         if (lettersFound[i] == '_') {
             countUnderScores += 1;
         }
@@ -195,12 +195,12 @@ void AlphabeticalSort(string &lettersGuessed) {
                 minIndex = j;
             }
         }
-        swap(lettersGuessed.at(minIndex), lettersGuessed.at(i));   		// swap the appropriate items
+        swap(lettersGuessed.at(minIndex), lettersGuessed.at(i));   	// swap the appropriate items
     }
 }
 
 /* check if the word in the dictionary and lettersUsed string has matching patterns
- * if there's matching pattern, then return false. If not, return true.			 */
+ * if there's matching pattern, then return false. If not, return true.		 */
 bool PatternMatch (string wordCheck, string lettersFound, char userGuess){
     int unsigned long wordLength = wordCheck.size();
     
@@ -227,7 +227,7 @@ void PlayGame(vector<string> &listWords, char userGuess, string &lettersGuessed,
         EliminateWords(listWords, userGuess);           // eliminate the words with that char
         lettersGuessed.push_back(userGuess);          	// append the user's guess and a space
         lettersGuessed.push_back(' ');
-        AlphabeticalSort(lettersGuessed);				// sort the letters in the string
+        AlphabeticalSort(lettersGuessed);		// sort the letters in the string
         
     }
     // if all words that have the same character, finalize the set of words so there are not 0 words left
