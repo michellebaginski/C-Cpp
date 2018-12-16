@@ -43,15 +43,14 @@ void ConvertToUpper(vector<string> &listWords) {
     string word, upperStr;           
     char letter;            // parse the letters of the word
 
-    //Use a  nested for loop to convert word from lower to uppercase
     for (int i = 0; i < listWords.size(); i++) {
         word = listWords.at(i);
-        for (int j = 0; j < word.length(); j++) { //Convert each letter in the worr to uppercase
+        for (int j = 0; j < word.length(); j++) { // convert each letter in the worr to uppercase
             letter = word[j];
             letter = toupper(word[j]);
-            upperStr.push_back(letter);         //Push back the capatalized letter to the new string
+            upperStr.push_back(letter);         // push back the capatalized letter to the new string
         }
-        listWords.at(i) = upperStr;            //Add the uppercase string to the vector element
+        listWords.at(i) = upperStr;		// add the uppercase string to the vector element
         word = "";
         upperStr = "";
     }
@@ -88,12 +87,12 @@ void ChosenWords(vector<string> &listWords, string &lettersFound,  char userGues
 
 // accesses dictionary file, makes a dictionary vector of strings using the words read in from the file
 vector<string> MakeDictionaryVector() {
-    ifstream inputFile;                 //Declare variable for input file.
-    vector<string> dictionary;          //Declare vector variable for dictionary.
-    vector<string> modifiedDictionary;  //Declare vector variable for modified dictionary.
-    string word;                        //Declare string variable for word in the dictionary
-    int wordLength;                     //Declare a int variable for user's wanted word length.
-    unsigned long length;               //Declare a int variable length for each word in the dictionary
+    ifstream inputFile;               
+    vector<string> dictionary;          
+    vector<string> modifiedDictionary;  
+    string word;                        
+    int wordLength;                     
+    unsigned long length;	// length for each word in the dictionary           
     
     // verify access to file
     inputFile.open("dictionary.txt");
