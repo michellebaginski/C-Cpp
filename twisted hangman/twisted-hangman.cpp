@@ -5,105 +5,37 @@
 #include <cctype>
 using namespace std;
 
-vector<string> MakeDictionaryVector();
-void ConvertToUpper(vector<string> &listWords);
-string LettersFound(vector<string> &listWords);
-void PlayGame(vector<string> &listWords, char userGuess, string &lettersGuessed, string &lettersFound);
-void EliminateWords(vector<string> &listWords, char userGuess);
-bool WordCounter(vector<string> &listWords, char userGuess);
-void ChosenWords(vector<string> &listWords, string &lettersFound, char userGuess);
-void AlphabeticalSort(string &lettersUsed);
-bool CheckWin(string &lettersFound,vector<string> &listWords);
-bool PatternMatch (string wordCheck, string lettersUsed,char userGuess);
-
-void DisplayHeader() {
-    cout << "Class: CS 141						\n"
-	 << "Authors: Kirun Haque and Michelle Baginski			\n"
-	 << "Lab: Tues 1pm (Kirun) and 11am (Michelle)			\n"
-	 << "System: C++ Mac Xcode					\n\n";
-		    
-    cout << "Welcome to the Twisted Hangman Game!			\n"
-    	 << "Enter the length of the word you want.			\n"
-    	 << "Your goal is to guess the word within 15 tries.		\n"
-   	 << "So keep guessing letters until you guess the word!		\n\n";
-}
-
-// removes all words that contain any occurence of letters chosen by the player
-void EliminateWords(vector<string> &listWords, char userGuess) {
-    for (int i = 0; i < listWords.size(); i++) {
-        if(listWords.at(i).find(userGuess) != string::npos) {      // if located, erase the char from the vector
-            listWords.erase(listWords.begin()+i);
-            i-=1;
-        }
-    }
-}
-
-// converts each word in the vector to uppercase and takes in a vector as its parameters(the dictionary)
-void ConvertToUpper(vector<string> &listWords) {
-    string word, upperStr;           
-    char letter;            // parse the letters of the word
-
-    for (int i = 0; i < listWords.size(); i++) {
-        word = listWords.at(i);
-        for (int j = 0; j < word.length(); j++) { // convert each letter in the worr to uppercase
-            letter = word[j];
-            letter = toupper(word[j]);
-            upperStr.push_back(letter);         // push back the capatalized letter to the new string
-        }
-        listWords.at(i) = upperStr;		// add the uppercase string to the vector element
-        word = "";
-        upperStr = "";
-    }
-}
-
-// eliminate words that don't match the first word in the dictionary's pattern
-void ChosenWords(vector<string> &listWords, string &lettersFound,  char userGuess) {
-    string chosenWord;                  // first word in the vector
-    string wordCheck;                   // checks against the rest of the words
-    int unsigned long charIndex;        // stores index position of the word
+void DisplayHeader() { 
+    cout << "Class: CS 141                                      \n"
+    << "Author: Kirun Haque and Michelle Baginski               \n"
+    << "Lab: Tues 1pm (Kirun) and 11am (Michelle)               \n"
+    << "System: C++ Mac Xcode                                   \n\n";
     
-    chosenWord = listWords.at(0);
-    charIndex = chosenWord.find(userGuess); 
-    unsigned long int wordLength;
-    wordLength = chosenWord.size();
-
-    // assign the lettersUsed string to the user's guess at the appropiate index
-    for (int i = 0; i < wordLength; ++i) {
-        if (chosenWord[i] == userGuess) {
-            lettersFound[i*2] = userGuess;
-        }
-    }
-    
-    // remove words that do not share the same character index
-    for (int i = 0; i < listWords.size(); i++) {
-        wordCheck = listWords.at(i);
-        // remove the word if the pattern of the word does not match with lettersFound, or if it does not have the same index letter
-        if ((listWords.at(i).find(userGuess) != charIndex) || (!PatternMatch(wordCheck, lettersFound, userGuess))) {
-            listWords.erase(listWords.begin()+i);
-            i-=1;
-        }
-    }
+    cout << "Welcome to the Twisted Hangman Game!               \n"
+    << "Enter the length of the word you want.                  \n"
+    << "Your goal is to guess the word within 15 tries.         \n"
+    << "So keep guessing letters until you guess the word!      \n\n";
 }
 
-// accesses dictionary file, makes a dictionary vector of strings using the words read in from the file
+// accesses the dictionary file, makes a dictionary vector of strings using the words in that file
 vector<string> MakeDictionaryVector() {
-    ifstream inputFile;               
-    vector<string> dictionary;          
-    vector<string> modifiedDictionary;  
-    string word;                        
-    int wordLength;                     
-    unsigned long length;	// length for each word in the dictionary           
+    ifstream inputFile;                 // input file
+    vector<string> dictionary;          // dictionary
+    vector<string> modifiedDictionary;  // modified dictionary
+    string word;                        // string variable for word in the dictionary
+    int wordLength;                     // user's wanted word length
+    unsigned long length;               // length for each word in the dictionary
     
     // verify access to file
     inputFile.open("dictionary.txt");
     if (!inputFile.is_open()) {
-        cout << "Could not locate file.  Exiting..." << endl; 
+        cout << "Could not locate file.  Exiting..." << endl;  //If not, exit
         exit(-1);
     }
     
     // add each word from the file to the vector
     while (inputFile >> word) {
-        unsigned long i = word.find('\'');  // do not include words with apostrophes
+        unsigned long i = word.find('\'');  // do not include words with an apostrophe
         if (i > word.length()) {
             dictionary.push_back(word);
         }
@@ -111,9 +43,9 @@ vector<string> MakeDictionaryVector() {
     
     // display starting number of words
     cout << "Starting with " << dictionary.size() << " words." << endl;
-    cout << "What length word do you want? ";  
+    cout << "What length word do you want? ";  //User will choose the length of the word
     cin  >> wordLength;
-    // append the words of the user's chosen length to the modified dictionary
+    // append the appropiate word length in a new vector
     for (int i = 0; i < dictionary.size(); i++) {
         length = dictionary.at(i).size();
         if (length == wordLength) { 
@@ -121,33 +53,72 @@ vector<string> MakeDictionaryVector() {
         }
     }
     
-    cout << "We now have " << modifiedDictionary.size() << " words of length " << wordLength; //Display the starting words number
+    cout << "We now have " << modifiedDictionary.size() << " words of length " << wordLength; // display the starting words number
     cout << endl << endl;
-    ConvertToUpper(modifiedDictionary); 
+    ConvertToUpper(modifiedDictionary);  // convert each word in the dictionary to uppercase
     
     return modifiedDictionary;
 }
 
+// convert each word in the vector to uppercase and takes in a vector dictionary as its parameter
+void ConvertToUpper(vector<string> &listWords) {
+    string word, upperStr;            
+    char letter;            // parsing the letters in the word
+
+    // convert the word from lowercase to uppercase 
+    for (int i = 0; i < listWords.size(); i++) {
+        word = listWords.at(i);
+        for (int j = 0; j < word.length(); j++) { 
+            letter = word[j];
+            letter = toupper(word[j]);
+            upperStr.push_back(letter);         
+        }
+        listWords.at(i) = upperStr;            // add the uppercase string to the vector 
+        word = "";
+        upperStr = "";
+    }
+}
+
+// displays letters used and found, and eliminates the appropiate words
+void PlayGame(vector<string> &listWords, char userGuess, string &lettersGuessed, string &lettersFound) {
+    // check with WordCounter function to not eliminate every word with an if statement
+    if (WordCounter(listWords, userGuess) == true) {
+        EliminateWords(listWords, userGuess);          		// if not, eliminate the words with the char
+        lettersGuessed.push_back(userGuess);           		// append letters and space in a lettersGuessed string
+        lettersGuessed.push_back(' ');
+        AlphabeticalSort(lettersGuessed);              		// call function to sort the letters in the string
+        
+    }
+    // if all words that have the same character, finalize the set of words so there are not 0 words left
+    else {
+        ChosenWords(listWords, lettersFound, userGuess);    // call the function that will choose the word and eliminate the appropiate words
+        cout << "You found letter " << userGuess << endl;
+    }
+
+    CheckWin(lettersFound, listWords);                     // call the function that will exit the program if the user won.
+    cout << "Now we have " << listWords.size() << " words." << endl << endl;
+}
+
 // checks if the word has been found
 bool CheckWin(string &lettersFound, vector<string> &listWords) {
-    int countUnderScores = 0;                      
-    unsigned long int wordLength;                  
-    int unsigned long numWords = listWords.size(); 
-    wordLength = lettersFound.size();                
+    int countUnderScores = 0;                       // count underscores
+    unsigned long int wordLength;                   
+    int unsigned long numWords = listWords.size();  
+    wordLength= lettersFound.size();                // size of the string
     
-    for (int i = 0; i < wordLength; ++i) {	// count the underscores
+    for (int i = 0; i < wordLength; ++i) {            
         if (lettersFound[i] == '_') {
             countUnderScores += 1;
         }
     }
     
-    // if there are no underScores in the string, display the congratulatory message and exit
+    // if there are no underScores in the string, then display the winning message and exit the program
     if (countUnderScores == 0) {
         cout << "Now we have " << numWords - 1 << " words." << endl;
         cout << lettersFound << endl
-        << " *** Congratulations, you did it! ***"      
+        << " *** Congratulations, you did it! ***"        
         << "\n\nDone" << endl;
-        exit(0);  
+        exit(0);  // exit the program...
     }
     return false;
 }
@@ -156,7 +127,7 @@ bool CheckWin(string &lettersFound, vector<string> &listWords) {
 bool WordCounter(vector<string> &listWords, char userGuess) {
     int wordCount = 0;
     
-    for (int i = 0; i < listWords.size(); i++) {	// count how many words contain the user's guess
+    for (int i = 0; i < listWords.size(); i++) { // count how many words that contains the user's guessin the vector
         if (listWords.at(i).find(userGuess) != string::npos) {
             wordCount +=1;
         }
@@ -165,6 +136,7 @@ bool WordCounter(vector<string> &listWords, char userGuess) {
     if (listWords.size() != wordCount) return true;
     else return false;                           // if the size of the vector = amount of wordCount, return false
 }
+
 
 // creates a string of the chosen word length that holds the places for the letters being used
 string LettersFound(vector<string> &listWords) {
@@ -182,7 +154,8 @@ string LettersFound(vector<string> &listWords) {
     return lettersUsed;
 }
 
-// displays characters used so far, sorts them in alphabetical order using selection sort
+
+// display characters used so far, sorts them in alphabetical order using selection sort
 void AlphabeticalSort(string &lettersGuessed) {
     unsigned long int length, minIndex;
     length = lettersGuessed.length();
@@ -195,57 +168,79 @@ void AlphabeticalSort(string &lettersGuessed) {
                 minIndex = j;
             }
         }
-        swap(lettersGuessed.at(minIndex), lettersGuessed.at(i));   	// swap the appropriate items
+        swap(lettersGuessed.at(minIndex), lettersGuessed.at(i));      	// swap appropriate  elements
     }
 }
 
-/* check if the word in the dictionary and lettersUsed string has matching patterns
- * if there's matching pattern, then return false. If not, return true.		 */
+
+// removes all words that contain any occurence of letters chosen by the player
+void EliminateWords(vector<string> &listWords, char userGuess) {
+    for (int i = 0; i < listWords.size(); i++) {
+        if(listWords.at(i).find(userGuess) != string::npos) {      // if located, erase the char from the vector
+            listWords.erase(listWords.begin()+i);
+            i-=1;
+        }
+    }
+}
+
+
+/* see if the word in the dictionary and lettersUsed string has matching patterns
+   if there are matching pattern, then return false. If not, return true. */
 bool PatternMatch (string wordCheck, string lettersFound, char userGuess){
     int unsigned long wordLength = wordCheck.size();
     
-    // check if the index in the word matches with lettersFound string
+    // check if index in word matches with lettersFound string, then check rest of the letters in the word
     for (int i = 0; i < wordLength; ++i) {
-        if (lettersFound[i*2] == userGuess) {           // if there's a match, check the rest of the letters in the word
-            for (int j = i+1; j < wordLength; ++j) {
-                if ((wordCheck[j] == userGuess) && (wordCheck[j] != lettersFound[j*2])) {
-                    return false;                       // no word could be removed
+        if (lettersFound[i*2] == userGuess) {           // if there's a match, check rest of the letters in the word
+            for (int j = i+1; j < wordLength; ++j){
+                if ((wordCheck[j] == userGuess) && (wordCheck[j] != lettersFound[j*2])){
+                    return false;                       //return false, so the word could be removed
                 }
-                if ((lettersFound[j*2] != '_') && (wordCheck[j] != lettersFound[j*2])) {
-                    return false;                       // word can be removed
+                if ((lettersFound[j*2] != '_') && (wordCheck[j] != lettersFound[j*2]))  {
+                    return false;                       // return false, so the word could be removed
                 }
             }
         }
     }
-    return true; // true if the wordCheck and lettersFound string pattern match.
+    return true; //Return true if the wordCheck and lettersFound string pattern match.
 }
 
-// displays letters used and found; eliminates the apropiate words
-void PlayGame(vector<string> &listWords, char userGuess, string &lettersGuessed, string &lettersFound) {
 
-    if (WordCounter(listWords, userGuess) == true) {
-        EliminateWords(listWords, userGuess);           // eliminate the words with that char
-        lettersGuessed.push_back(userGuess);          	// append the user's guess and a space
-        lettersGuessed.push_back(' ');
-        AlphabeticalSort(lettersGuessed);		// sort the letters in the string
-        
-    }
-    // if all words that have the same character, finalize the set of words so there are not 0 words left
-    else {
-        ChosenWords(listWords, lettersFound, userGuess);    // call the function that will choose the word and eliminate the appropiate words
-        cout << "You found letter " << userGuess << endl;
+// eliminate the words that don't match the first word in the dictionary's pattern
+void ChosenWords(vector<string> &listWords, string &lettersFound,  char userGuess) {
+    string chosenWord;                  // first word in the vector
+    string wordCheck;                   // check the rest of words in the vector
+    int unsigned long charIndex;        // get the index position of the word.
+    
+    // pick the first word from the listWord vector
+    chosenWord = listWords.at(0);
+    charIndex = chosenWord.find(userGuess);  // locate index of the char in the word
+    
+    unsigned long int wordLength;
+    wordLength = chosenWord.size();
+    // assign the lettersUsed string to the user's guess to the appropiate index
+    for (int i = 0; i < wordLength; ++i) {
+        if (chosenWord[i] == userGuess) {
+            lettersFound[i*2] = userGuess;
+        }
     }
     
-    CheckWin(lettersFound, listWords);                     // check for a winner, exit if found
-    cout << "Now we have " << listWords.size() << " words." << endl << endl;
+    // remove words that do not share the same character index
+    for (int i = 0; i < listWords.size(); i++) {
+        wordCheck = listWords.at(i);
+        // remove word if the pattern of the word does not match with lettersFound string or if it doesn't have the same index letter
+        if ((listWords.at(i).find(userGuess) != charIndex) || (!PatternMatch(wordCheck, lettersFound, userGuess))) {
+            listWords.erase(listWords.begin()+i);
+            i-=1;
+        }
+    }
 }
 
 
 int main() {
     DisplayHeader();
     int numTurn = 15;
-    string lettersFound;
-    string lettersGuessed;
+    string lettersFound, lettersGuessed;
     char userGuess;
     vector <string> listWords = MakeDictionaryVector();
     lettersFound = LettersFound(listWords);
@@ -253,26 +248,22 @@ int main() {
     while (numTurn > 0) {
         cout << numTurn << ". Letters used so far: " << lettersGuessed << endl;
         cout << "Letters found: " << lettersFound << endl;
-        cout << "Guess a letter: "; 
-
+        cout << "Guess a letter: "; // ask the user to guess a letter
         // take user letter guess input, convert it to uppercase
         cin >> userGuess;
         userGuess = toupper(userGuess);
         
-        // display the list of words if tilde is entered
+        //Display the list of words if tilde is entered
         if (userGuess == '~') {
             for (int i = 0; i < listWords.size(); i++) {
                 cout << listWords.at(i) << " ";
             }
             cout << endl << endl;
             continue;
-        } // call the function that will play the game and eliminate the appropiate words.
+        }
         PlayGame(listWords, userGuess, lettersGuessed, lettersFound);
         numTurn-=1;
     }
-    // if the program was not exited before the loop, then display losing message after the loop
+    // if the program was not exited before the loop, display losing message 
     cout << "Sorry, you lose..." << endl;
-
-    return 0;
 }
-
