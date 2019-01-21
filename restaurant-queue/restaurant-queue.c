@@ -158,6 +158,7 @@ char* RetrieveAndRemove(node** head, int size) {
                 // singleton case
                 if ((*head) == tmp && tmp->next == NULL) {
                     free(tmp);
+                    tmp = NULL;
                     return name;
                 }
                 // removing the first group in the list (non-singleton)
