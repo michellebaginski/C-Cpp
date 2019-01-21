@@ -113,24 +113,14 @@ int OddParity(char& entry1, char& entry2, char& entry3, char& entry4, char& entr
     int countX;              //Counts each  occurence of X
     
     countX = 0;
-    if (entry1 == 'X') {    //Check all 6 entries in a row or column, if it contains 'X' +1 to the counter
-        countX += 1;
-    }
-    if (entry2 == 'X') {
-        countX += 1;
-    }
-    if (entry3 == 'X') {
-        countX += 1;
-    }
-    if (entry4 == 'X') {
-        countX += 1;
-    }
-    if (entry5 == 'X') {
-        countX += 1;
-    }
-    if (entry6 == 'X') {
-        countX += 1;
-    }
+    //Check all 6 entries in a row or column, if it contains 'X' +1 to the counter
+    if (entry1 == 'X') countX += 1;
+    if (entry2 == 'X') countX += 1;
+    if (entry3 == 'X') countX += 1;
+    if (entry4 == 'X') countX += 1;
+    if (entry5 == 'X') countX += 1;
+    if (entry6 == 'X') countX += 1;
+    
     /* If the counter % 2 is even, the parity rule is not met so set it to 0. If it is odd set it to 1 and return
      it where it will be called in RandomizeBoard() to check parity for all 6 rows and all 6 columns together */
     countX = (countX % 2 == 0) ?  0: 1;
@@ -204,37 +194,20 @@ void SwitchPiece(char userInput1, char userInput2) {
     switch (userInput1) {
         case 'A':  //Check upper and lowercase A
         case 'a':
-            if (userInput2 == '1') {
-                p0 = (p0 == 'X') ? 'O' : 'X';
-            }
-            if (userInput2 == '2') {
-                p1 = (p1 == 'X') ? 'O' : 'X';
-            }
-            if (userInput2 == '3') {
-                p2 = (p2 == 'X') ? 'O' : 'X';
-            }
-            if (userInput2 == '4') {
-                p3 = (p3 == 'X') ? 'O' : 'X';
-            }
-            if (userInput2 == '5') {
-                p4 = (p4 == 'X') ? 'O' : 'X';
-            }
-            if (userInput2 == '6') {
-                p5 = (p5 == 'X') ? 'O' : 'X';
-            }
+            if (userInput2 == '1') p0 = (p0 == 'X') ? 'O' : 'X';
+            if (userInput2 == '2') p1 = (p1 == 'X') ? 'O' : 'X';
+            if (userInput2 == '3') p2 = (p2 == 'X') ? 'O' : 'X';
+            if (userInput2 == '4') p3 = (p3 == 'X') ? 'O' : 'X';
+            if (userInput2 == '5') p4 = (p4 == 'X') ? 'O' : 'X';
+            if (userInput2 == '6') p5 = (p5 == 'X') ? 'O' : 'X';
             break;
             
         case 'B':  //Check upper and lowercase B
         case 'b':
-            if (userInput2 == '1') {
-                p6 = (p6 == 'X') ? 'O' : 'X';
-            }
-            if (userInput2 == '2') {
-                p7 = (p7 == 'X') ? 'O' : 'X';
-            }
-            if (userInput2 == '3') {
-                p8 = (p8 == 'X') ? 'O' : 'X';
-            }
+            if (userInput2 == '1') p6 = (p6 == 'X') ? 'O' : 'X';
+            if (userInput2 == '2') p7 = (p7 == 'X') ? 'O' : 'X';
+            if (userInput2 == '3') p8 = (p8 == 'X') ? 'O' : 'X';
+
             if (userInput2 == '4') {
                 p9 = (p9 == 'X') ? 'O' : 'X';
             }
